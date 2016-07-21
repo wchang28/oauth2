@@ -33,8 +33,13 @@ export interface AuthorizationWorkflowParams {
 	state?: string;    
 }
 
+export interface TokenGrantOptions {
+    url: string;
+    rejectUnauthorized?: boolean
+}
+
 export class TokenGrant {
-    constructor(private jQuery:any, public tokenGrantUrl:string, public clientAppSettings:ClientAppSettings) {}
+    constructor(private jQuery:any, public options:TokenGrantOptions, public clientAppSettings:ClientAppSettings) {}
     getAccessTokenFromAuthCode (code:string, done:(err:any, access: Access) => void) : void {
         let params: TokenGrantParams = {
             grant_type: 'authorization_code'
@@ -43,7 +48,8 @@ export class TokenGrant {
             ,client_secret: this.clientAppSettings.client_secret
             ,redirect_uri: this.clientAppSettings.redirect_uri
         };
-        this.jQuery.post(this.tokenGrantUrl, params)
+        if (typeof this.options.rejectUnauthorized === 'boolean') this.jQuery.ajax.defaults({rejectUnauthorized: this.options.rejectUnauthorized});
+        this.jQuery.post(this.options.url, params)
         .done((data) => {
             let access:Access = JSON.parse(data);
             if (typeof done === 'function') done(null, access);
@@ -59,7 +65,8 @@ export class TokenGrant {
             ,username: username
             ,password: password
         };
-        this.jQuery.post(this.tokenGrantUrl, params)
+        if (typeof this.options.rejectUnauthorized === 'boolean') this.jQuery.ajax.defaults({rejectUnauthorized: this.options.rejectUnauthorized});
+        this.jQuery.post(this.options.url, params)
         .done((data) => {
             let access: Access = JSON.parse(data);
             if (typeof done === 'function') done(null, access);
@@ -74,7 +81,8 @@ export class TokenGrant {
             ,client_secret: this.clientAppSettings.client_secret
             ,refresh_token: refresh_token
         };
-        this.jQuery.post(this.tokenGrantUrl, params)
+        if (typeof this.options.rejectUnauthorized === 'boolean') this.jQuery.ajax.defaults({rejectUnauthorized: this.options.rejectUnauthorized});
+        this.jQuery.post(this.options.url, params)
         .done((data) => {
             let access:Access = JSON.parse(data);
             if (typeof done === 'function') done(null, access);

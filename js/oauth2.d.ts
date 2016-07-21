@@ -26,11 +26,15 @@ export interface AuthorizationWorkflowParams {
     redirect_uri: string;
     state?: string;
 }
+export interface TokenGrantOptions {
+    url: string;
+    rejectUnauthorized?: boolean;
+}
 export declare class TokenGrant {
     private jQuery;
-    tokenGrantUrl: string;
+    options: TokenGrantOptions;
     clientAppSettings: ClientAppSettings;
-    constructor(jQuery: any, tokenGrantUrl: string, clientAppSettings: ClientAppSettings);
+    constructor(jQuery: any, options: TokenGrantOptions, clientAppSettings: ClientAppSettings);
     getAccessTokenFromAuthCode(code: string, done: (err: any, access: Access) => void): void;
     getAccessTokenFromPassword(username: string, password: string, done: (err: any, access: Access) => void): void;
     refreshAccessToken(refresh_token: string, done: (err: any, access: Access) => void): void;

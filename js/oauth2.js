@@ -1,7 +1,7 @@
 var TokenGrant = (function () {
-    function TokenGrant(jQuery, tokenGrantUrl, clientAppSettings) {
+    function TokenGrant(jQuery, options, clientAppSettings) {
         this.jQuery = jQuery;
-        this.tokenGrantUrl = tokenGrantUrl;
+        this.options = options;
         this.clientAppSettings = clientAppSettings;
     }
     TokenGrant.prototype.getAccessTokenFromAuthCode = function (code, done) {
@@ -12,7 +12,9 @@ var TokenGrant = (function () {
             client_secret: this.clientAppSettings.client_secret,
             redirect_uri: this.clientAppSettings.redirect_uri
         };
-        this.jQuery.post(this.tokenGrantUrl, params)
+        if (typeof this.options.rejectUnauthorized === 'boolean')
+            this.jQuery.ajax.defaults({ rejectUnauthorized: this.options.rejectUnauthorized });
+        this.jQuery.post(this.options.url, params)
             .done(function (data) {
             var access = JSON.parse(data);
             if (typeof done === 'function')
@@ -30,7 +32,9 @@ var TokenGrant = (function () {
             username: username,
             password: password
         };
-        this.jQuery.post(this.tokenGrantUrl, params)
+        if (typeof this.options.rejectUnauthorized === 'boolean')
+            this.jQuery.ajax.defaults({ rejectUnauthorized: this.options.rejectUnauthorized });
+        this.jQuery.post(this.options.url, params)
             .done(function (data) {
             var access = JSON.parse(data);
             if (typeof done === 'function')
@@ -48,7 +52,9 @@ var TokenGrant = (function () {
             client_secret: this.clientAppSettings.client_secret,
             refresh_token: refresh_token
         };
-        this.jQuery.post(this.tokenGrantUrl, params)
+        if (typeof this.options.rejectUnauthorized === 'boolean')
+            this.jQuery.ajax.defaults({ rejectUnauthorized: this.options.rejectUnauthorized });
+        this.jQuery.post(this.options.url, params)
             .done(function (data) {
             var access = JSON.parse(data);
             if (typeof done === 'function')
