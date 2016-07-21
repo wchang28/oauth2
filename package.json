@@ -1,0 +1,20 @@
+{
+  "name": "oauth2",
+  "version": "0.0.1",
+  "description": "OAuth2 Module",
+  "main": "js/oauth2.js",
+  "typings": "js/oauth2.d.ts",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wchang28/oauth2.git"
+  },
+  "keywords": [
+    "OAUTH2",
+    "token",
+    "grant"
+  ],
+  "author": "Wen Chang",
+  "license": "MIT"
+}
