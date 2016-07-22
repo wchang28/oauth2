@@ -4,6 +4,7 @@ var TokenGrant = (function () {
         this.options = options;
         this.clientAppSettings = clientAppSettings;
     }
+    // authorization_code workflow
     TokenGrant.prototype.getAccessTokenFromAuthCode = function (code, done) {
         var params = {
             grant_type: 'authorization_code',
@@ -24,6 +25,7 @@ var TokenGrant = (function () {
                 done(err, null);
         });
     };
+    // password workflow
     TokenGrant.prototype.getAccessTokenFromPassword = function (username, password, done) {
         var params = {
             grant_type: 'password',

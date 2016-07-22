@@ -18,13 +18,13 @@ export type TokenGrantType = "password" | "refresh_token" | "authorization_code"
 
 export interface TokenGrantParams extends ClientAppSettings {
     grant_type: TokenGrantType;
-    code?: string;  // authorization_code workflow
+    code?: string;  // for authorization_code workflow
     refresh_token?: string; // refresh_token 
-    username?: string;  // password workflow
-    password?: string;  // password workflow
+    username?: string;  // for password workflow
+    password?: string;  // for password workflow
 }
 
-export type AuthResponseType = "code" | "token";
+export type AuthResponseType = "code" | "token";    // authorization_code or authorization_token workflow
 
 export interface AuthorizationWorkflowParams {
 	response_type: AuthResponseType;
@@ -38,8 +38,15 @@ export interface TokenGrantOptions {
     rejectUnauthorized?: boolean
 }
 
+export interface ClientAppOptions {
+    tokenGrantOptions: TokenGrantOptions;
+    clientAppSettings: ClientAppSettings;
+    authorizationRedirectUrl?: string   // authorization_code or authorization_token workflow redirect url
+}
+
 export class TokenGrant {
     constructor(private jQuery:any, public options:TokenGrantOptions, public clientAppSettings:ClientAppSettings) {}
+    // authorization_code workflow
     getAccessTokenFromAuthCode (code:string, done:(err:any, access: Access) => void) : void {
         let params: TokenGrantParams = {
             grant_type: 'authorization_code'
@@ -57,6 +64,7 @@ export class TokenGrant {
             if (typeof done === 'function') done(err, null);
         });		
     }
+    // password workflow
     getAccessTokenFromPassword(username:string, password:string, done:(err:any, access: Access) => void) : void {
         let params: TokenGrantParams = {
             grant_type: 'password'

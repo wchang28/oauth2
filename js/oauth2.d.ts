@@ -30,6 +30,11 @@ export interface TokenGrantOptions {
     url: string;
     rejectUnauthorized?: boolean;
 }
+export interface ClientAppOptions {
+    tokenGrantOptions: TokenGrantOptions;
+    clientAppSettings: ClientAppSettings;
+    authorizationRedirectUrl?: string;
+}
 export declare class TokenGrant {
     private jQuery;
     options: TokenGrantOptions;
