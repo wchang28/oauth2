@@ -70,3 +70,27 @@ var TokenGrant = (function () {
     return TokenGrant;
 }());
 exports.TokenGrant = TokenGrant;
+var Utils = (function () {
+    function Utils() {
+    }
+    Utils.getBrowserAuthRedirectUrlWithQueryString = function (authorizationRedirectUrl, client_id, redirect_uri, state) {
+        var url = authorizationRedirectUrl;
+        url += '?';
+        var query = {
+            response_type: 'code',
+            client_id: client_id,
+            redirect_uri: redirect_uri
+        };
+        if (state)
+            query.state = state;
+        var ar = [];
+        for (var fld in query) {
+            if (query[fld])
+                ar.push(encodeURIComponent(fld) + '=' + encodeURIComponent(query[fld]));
+        }
+        url += ar.join('&');
+        return url;
+    };
+    return Utils;
+}());
+exports.Utils = Utils;

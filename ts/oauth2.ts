@@ -98,4 +98,24 @@ export class TokenGrant {
             if (typeof done === 'function') done(err, null);
         });		
     };
-} 
+}
+
+export class Utils {
+    public static getBrowserAuthRedirectUrlWithQueryString(authorizationRedirectUrl: string, client_id: string, redirect_uri:string, state?:string) : string {
+        let url = authorizationRedirectUrl;
+        url += '?';
+        let query:AuthorizationWorkflowParams = {
+            response_type: 'code'
+            ,client_id: client_id
+            ,redirect_uri: redirect_uri
+        };
+        if (state) query.state = state;
+        let ar = [];
+        for (var fld in query) {
+            if (query[fld])
+                ar.push(encodeURIComponent(fld) + '=' + encodeURIComponent(query[fld]));
+        }
+        url += ar.join('&');
+        return url;
+    }
+}

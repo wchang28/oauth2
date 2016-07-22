@@ -44,3 +44,6 @@ export declare class TokenGrant {
     getAccessTokenFromPassword(username: string, password: string, done: (err: any, access: Access) => void): void;
     refreshAccessToken(refresh_token: string, done: (err: any, access: Access) => void): void;
 }
+export declare class Utils {
+    static getBrowserAuthRedirectUrlWithQueryString(authorizationRedirectUrl: string, client_id: string, redirect_uri: string, state?: string): string;
+}
