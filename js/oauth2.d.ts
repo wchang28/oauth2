@@ -26,6 +26,10 @@ export interface AuthorizationWorkflowParams {
     redirect_uri: string;
     state?: string;
 }
+export interface AuthCodeWorkflowQueryParams {
+    code: string;
+    state?: string;
+}
 export interface TokenGrantOptions {
     url: string;
     rejectUnauthorized?: boolean;
