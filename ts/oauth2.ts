@@ -33,6 +33,11 @@ export interface AuthorizationWorkflowParams {
 	state?: string;    
 }
 
+export interface AuthCodeWorkflowQueryParams {
+    code:string;
+    state?:string;
+}
+
 export interface TokenGrantOptions {
     url: string;
     rejectUnauthorized?: boolean
