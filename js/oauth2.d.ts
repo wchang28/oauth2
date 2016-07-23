@@ -62,6 +62,10 @@ export interface IErrors {
     bad_response_type: IError;
     bad_grant_type: IError;
     not_authorized: IError;
+    bad_client_id: IError;
+    bad_client_secret: IError;
+    bad_redirect_uri: IError;
+    bad_credential: IError;
 }
 declare let errors: {
     bad_response_type: {
@@ -73,6 +77,22 @@ declare let errors: {
         error_description: string;
     };
     not_authorized: {
+        error: string;
+        error_description: string;
+    };
+    bad_client_id: {
+        error: string;
+        error_description: string;
+    };
+    bad_client_secret: {
+        error: string;
+        error_description: string;
+    };
+    bad_redirect_uri: {
+        error: string;
+        error_description: string;
+    };
+    bad_credential: {
         error: string;
         error_description: string;
     };
