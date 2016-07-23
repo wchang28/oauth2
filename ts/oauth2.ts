@@ -1,3 +1,8 @@
+export interface IError {
+    error: string;
+    error_description: string;
+}
+
 export interface ClientAppSettings {
     client_id:string;
     redirect_uri?:string;   // weak verification for client
@@ -124,3 +129,17 @@ export class Utils {
         return url;
     }
 }
+
+export interface IErrors {
+    bad_response_type:IError;
+    bad_grant_type:IError;
+    not_authorized: IError;
+}
+
+let errors = {
+   bad_response_type: {error: "unsupported_response_type", error_description:"response type is not supported"}
+   ,bad_grant_type: {error: "unsupported_grant_type", error_description:"grant type not supported"}
+   ,not_authorized: {error: 'not_authorized', error_description: 'not authorized'}
+}
+
+export {errors};

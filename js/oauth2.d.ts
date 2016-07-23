@@ -1,3 +1,7 @@
+export interface IError {
+    error: string;
+    error_description: string;
+}
 export interface ClientAppSettings {
     client_id: string;
     redirect_uri?: string;
@@ -51,3 +55,23 @@ export declare class TokenGrant {
 export declare class Utils {
     static getBrowserAuthRedirectUrlWithQueryString(authorizationRedirectUrl: string, client_id: string, redirect_uri: string, state?: string): string;
 }
+export interface IErrors {
+    bad_response_type: IError;
+    bad_grant_type: IError;
+    not_authorized: IError;
+}
+declare let errors: {
+    bad_response_type: {
+        error: string;
+        error_description: string;
+    };
+    bad_grant_type: {
+        error: string;
+        error_description: string;
+    };
+    not_authorized: {
+        error: string;
+        error_description: string;
+    };
+};
+export { errors };

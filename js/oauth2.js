@@ -94,3 +94,9 @@ var Utils = (function () {
     return Utils;
 }());
 exports.Utils = Utils;
+var errors = {
+    bad_response_type: { error: "unsupported_response_type", error_description: "response type is not supported" },
+    bad_grant_type: { error: "unsupported_grant_type", error_description: "grant type not supported" },
+    not_authorized: { error: 'not_authorized', error_description: 'not authorized' }
+};
+exports.errors = errors;
