@@ -73,16 +73,8 @@ exports.TokenGrant = TokenGrant;
 var Utils = (function () {
     function Utils() {
     }
-    Utils.getBrowserAuthRedirectUrlWithQueryString = function (authorizationRedirectUrl, client_id, redirect_uri, state) {
-        var url = authorizationRedirectUrl;
-        url += '?';
-        var query = {
-            response_type: 'code',
-            client_id: client_id,
-            redirect_uri: redirect_uri
-        };
-        if (state)
-            query.state = state;
+    Utils.getAuthWorkflowRedirectUrlWithQueryString = function (authorizationRedirectUrl, query) {
+        var url = authorizationRedirectUrl + '?';
         var ar = [];
         for (var fld in query) {
             if (query[fld])

@@ -29,6 +29,9 @@ export interface AuthorizationWorkflowParams {
     client_id: string;
     redirect_uri: string;
     state?: string;
+    scope?: string;
+    nonce?: string;
+    prompt?: string;
 }
 export interface AuthCodeWorkflowQueryParams {
     code: string;
@@ -53,7 +56,7 @@ export declare class TokenGrant {
     refreshAccessToken(refresh_token: string, done: (err: any, access: Access) => void): void;
 }
 export declare class Utils {
-    static getBrowserAuthRedirectUrlWithQueryString(authorizationRedirectUrl: string, client_id: string, redirect_uri: string, state?: string): string;
+    static getAuthWorkflowRedirectUrlWithQueryString(authorizationRedirectUrl: string, query: AuthorizationWorkflowParams): string;
 }
 export interface IErrors {
     bad_response_type: IError;
