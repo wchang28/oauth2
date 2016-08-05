@@ -1,3 +1,4 @@
+import * as restApiIntf from "rest-api-interfaces";
 export interface IError {
     error: string;
     error_description: string;
@@ -11,9 +12,8 @@ export interface AccessToken {
     token_type: string;
     access_token: string;
 }
-export interface Access extends AccessToken {
+export interface Access extends AccessToken, restApiIntf.ConnectOptions {
     refresh_token?: string;
-    instance_url?: string;
 }
 export declare type TokenGrantType = "password" | "refresh_token" | "authorization_code";
 export interface TokenGrantParams extends ClientAppSettings {
