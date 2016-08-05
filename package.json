@@ -1,6 +1,6 @@
 {
   "name": "oauth2",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "OAuth2 Module",
   "main": "js/oauth2.js",
   "typings": "js/oauth2.d.ts",
@@ -16,5 +16,8 @@
     "grant"
   ],
   "author": "Wen Chang",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "rest-api-interfaces": "git+https://github.com/wchang28/rest-api-interfaces.git"
+  }
 }
