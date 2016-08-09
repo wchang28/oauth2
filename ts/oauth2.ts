@@ -12,8 +12,8 @@ export interface ClientAppSettings {
 }
 
 export interface AccessToken {
-    token_type: string;
-    access_token: string;
+    token_type?: string;
+    access_token?: string;
 }
 
 export interface Access extends AccessToken, restApiIntf.ConnectOptions {
