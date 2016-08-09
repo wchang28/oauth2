@@ -9,8 +9,8 @@ export interface ClientAppSettings {
     client_secret?: string;
 }
 export interface AccessToken {
-    token_type: string;
-    access_token: string;
+    token_type?: string;
+    access_token?: string;
 }
 export interface Access extends AccessToken, restApiIntf.ConnectOptions {
     refresh_token?: string;
