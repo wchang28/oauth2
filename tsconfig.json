@@ -10,7 +10,6 @@
       "watch": true
   },
   "files": [
-    "./typings/index.d.ts",
     "./ts/oauth2.ts"
   ]
 }

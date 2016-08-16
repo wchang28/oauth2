@@ -46,14 +46,13 @@ export interface ClientAppOptions {
     clientAppSettings: ClientAppSettings;
     authorizationRedirectUrl?: string;
 }
-export declare class TokenGrant {
-    private jQuery;
-    options: TokenGrantOptions;
-    clientAppSettings: ClientAppSettings;
-    constructor(jQuery: any, options: TokenGrantOptions, clientAppSettings: ClientAppSettings);
-    getAccessTokenFromAuthCode(code: string, done: (err: any, access: Access) => void): void;
-    getAccessTokenFromPassword(username: string, password: string, done: (err: any, access: Access) => void): void;
-    refreshAccessToken(refresh_token: string, done: (err: any, access: Access) => void): void;
+export interface ITokenGrantCompletionHandler {
+    (err: any, access: Access): void;
+}
+export interface ITokenGrant {
+    getAccessTokenFromAuthCode: (code: string, done: ITokenGrantCompletionHandler) => void;
+    getAccessTokenFromPassword: (username: string, password: string, done: ITokenGrantCompletionHandler) => void;
+    refreshAccessToken: (refresh_token: string, done: ITokenGrantCompletionHandler) => void;
 }
 export declare class Utils {
     static getAuthWorkflowRedirectUrlWithQueryString(authorizationRedirectUrl: string, query: AuthorizationWorkflowParams): string;
