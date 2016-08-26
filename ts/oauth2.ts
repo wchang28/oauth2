@@ -79,6 +79,22 @@ export class Utils {
         url += ar.join('&');
         return url;
     }
+    public static getAuthorizationHeaderFormAccessToken(accessToken: AccessToken) : string {
+        return (accessToken && accessToken.token_type && accessToken.access_token ? accessToken.token_type + ' ' + accessToken.access_token : null);
+    }
+    public static getAccessTokenFromAuthorizationHeader(authHeader: string) : AccessToken {
+        let accessToken:AccessToken = null;
+        if (authHeader) {
+            let x = authHeader.indexOf(' ');
+            if (x != -1) {
+                accessToken = {
+                    token_type: authHeader.substr(0, x)
+                    ,access_token: authHeader.substr(x+1)
+                };
+            }
+        }
+        return accessToken;
+    }
 }
 
 export interface IErrors {

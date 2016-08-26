@@ -56,6 +56,8 @@ export interface ITokenGrant {
 }
 export declare class Utils {
     static getAuthWorkflowRedirectUrlWithQueryString(authorizationRedirectUrl: string, query: AuthorizationWorkflowParams): string;
+    static getAuthorizationHeaderFormAccessToken(accessToken: AccessToken): string;
+    static getAccessTokenFromAuthorizationHeader(authHeader: string): AccessToken;
 }
 export interface IErrors {
     bad_response_type: IError;

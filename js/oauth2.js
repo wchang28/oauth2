@@ -11,6 +11,22 @@ var Utils = (function () {
         url += ar.join('&');
         return url;
     };
+    Utils.getAuthorizationHeaderFormAccessToken = function (accessToken) {
+        return (accessToken && accessToken.token_type && accessToken.access_token ? accessToken.token_type + ' ' + accessToken.access_token : null);
+    };
+    Utils.getAccessTokenFromAuthorizationHeader = function (authHeader) {
+        var accessToken = null;
+        if (authHeader) {
+            var x = authHeader.indexOf(' ');
+            if (x != -1) {
+                accessToken = {
+                    token_type: authHeader.substr(0, x),
+                    access_token: authHeader.substr(x + 1)
+                };
+            }
+        }
+        return accessToken;
+    };
     return Utils;
 }());
 exports.Utils = Utils;
