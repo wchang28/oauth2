@@ -1,3 +1,4 @@
+"use strict";
 var Utils = (function () {
     function Utils() {
     }
