@@ -14,6 +14,8 @@ export interface AccessToken {
 }
 export interface Access extends AccessToken, restApiIntf.ConnectOptions {
     refresh_token?: string;
+    scope?: string;
+    expires_in?: number;
 }
 export declare type TokenGrantType = "password" | "refresh_token" | "authorization_code";
 export interface TokenGrantParams extends ClientAppSettings {

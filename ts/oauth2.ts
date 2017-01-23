@@ -18,6 +18,8 @@ export interface AccessToken {
 
 export interface Access extends AccessToken, restApiIntf.ConnectOptions {
     refresh_token?: string;
+    scope?: string;
+    expires_in?: number;
 }
 
 export type TokenGrantType = "password" | "refresh_token" | "authorization_code";
@@ -33,10 +35,10 @@ export interface TokenGrantParams extends ClientAppSettings {
 export type AuthResponseType = "code" | "token";    // authorization_code or authorization_token workflow
 
 export interface AuthorizationWorkflowParams {
-	response_type: AuthResponseType;
-	client_id: string;
-	redirect_uri: string;
-	state?: string;
+    response_type: AuthResponseType;
+    client_id: string;
+    redirect_uri: string;
+    state?: string;
     scope?: string;
     nonce?: string;
     prompt?:string;
