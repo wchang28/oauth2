@@ -44,9 +44,15 @@ export interface AuthorizationWorkflowParams {
     prompt?:string;
 }
 
+// query parameters returned from the auth code workflow
 export interface AuthCodeWorkflowQueryParams {
-    code:string;
-    state?:string;
+    code: string;
+    state?: string;
+}
+
+// hash (#) parameters from the auth token workflow
+export interface AuthTokenWorkflowHashParams extends Access {
+    state?: string;
 }
 
 export interface TokenGrantOptions {
@@ -71,6 +77,7 @@ export interface ITokenGrant {
 }
 
 export class Utils {
+    // Build the redirect url with query string for the oauth2 authentication workflow
     public static getAuthWorkflowRedirectUrlWithQueryString(authorizationRedirectUrl: string, query: AuthorizationWorkflowParams) : string {
         let url = authorizationRedirectUrl + '?';
         let ar:string[] = [];
@@ -80,6 +87,51 @@ export class Utils {
         }
         url += ar.join('&');
         return url;
+    }
+    // Build the query string (?...) for the auth code workflow that will later be used to redirect browser client
+    public static buildAuthCodeWorkflowQueryString(code: string, state?: string) : string {
+        let queryString = '?code=' + encodeURIComponent(code);
+        if (state) queryString += '&state=' + encodeURIComponent(state);
+        return queryString;
+    }
+    // Build the hash string (#...) for the auth token workflow that will later be used to redirect browser/destktop/mobile client
+    public static buildAuthTokenWorkflowHashString(access: Access, state?: string) : string {
+        let hashString = "#";
+        let a:string[] = [];
+        for (let fld in access) {
+            if (access[fld] != null)
+                a.push(encodeURIComponent(fld) + '=' + encodeURIComponent(access[fld].toString()));
+        }
+        hashString += a.join('&');
+        if (state) hashString += '&state=' + encodeURIComponent(state);
+        return hashString;
+    }
+    // Parse the hash string (#...) returned from the auth token workflow. The hash string was built using the buildAuthTokenWorkflowHashString() call
+    public static parseAuthTokenWorkflowHashString(hashString: string) : AuthTokenWorkflowHashParams {
+        if (!hashString)
+            return null;
+        else {
+            if (hashString.substr(0) === '#') hashString = hashString.substr(1);
+            if (!hashString) return null;
+            let o:any = {};
+            let parts = hashString.split('&');
+            for (let i in parts) {
+                let s = parts[i];
+                let p = s.split('=');
+                if (p.length === 2 && p[0] && p[1]) {
+                    let fld = decodeURIComponent(p[0]);
+                    let value = decodeURIComponent(p[1]);
+                    if (fld === 'rejectUnauthorized') {
+                        let b: boolean = (value === 'true' || value === "1")
+                        o[fld] = b;
+                    } else if (fld === "expires_in") {
+                        if (!isNaN(parseInt(value))) o[fld] = parseInt(value);
+                    } else
+                        o[fld] = value;
+                }
+            }
+            return o;
+        }
     }
     public static getAuthorizationHeaderFormAccessToken(accessToken: AccessToken) : string {
         return (accessToken && accessToken.token_type && accessToken.access_token ? accessToken.token_type + ' ' + accessToken.access_token : null);

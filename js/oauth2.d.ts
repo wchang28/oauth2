@@ -39,6 +39,9 @@ export interface AuthCodeWorkflowQueryParams {
     code: string;
     state?: string;
 }
+export interface AuthTokenWorkflowHashParams extends Access {
+    state?: string;
+}
 export interface TokenGrantOptions {
     url: string;
     rejectUnauthorized?: boolean;
@@ -58,6 +61,9 @@ export interface ITokenGrant {
 }
 export declare class Utils {
     static getAuthWorkflowRedirectUrlWithQueryString(authorizationRedirectUrl: string, query: AuthorizationWorkflowParams): string;
+    static buildAuthCodeWorkflowQueryString(code: string, state?: string): string;
+    static buildAuthTokenWorkflowHashString(access: Access, state?: string): string;
+    static parseAuthTokenWorkflowHashString(hashString: string): AuthTokenWorkflowHashParams;
     static getAuthorizationHeaderFormAccessToken(accessToken: AccessToken): string;
     static getAccessTokenFromAuthorizationHeader(authHeader: string): AccessToken;
 }

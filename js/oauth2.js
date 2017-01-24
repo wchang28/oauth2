@@ -2,6 +2,7 @@
 var Utils = (function () {
     function Utils() {
     }
+    // Build the redirect url with query string for the oauth2 authentication workflow
     Utils.getAuthWorkflowRedirectUrlWithQueryString = function (authorizationRedirectUrl, query) {
         var url = authorizationRedirectUrl + '?';
         var ar = [];
@@ -11,6 +12,58 @@ var Utils = (function () {
         }
         url += ar.join('&');
         return url;
+    };
+    // Build the query string (?...) for the auth code workflow that will later be used to redirect browser client
+    Utils.buildAuthCodeWorkflowQueryString = function (code, state) {
+        var queryString = '?code=' + encodeURIComponent(code);
+        if (state)
+            queryString += '&state=' + encodeURIComponent(state);
+        return queryString;
+    };
+    // Build the hash string (#...) for the auth token workflow that will later be used to redirect browser/destktop/mobile client
+    Utils.buildAuthTokenWorkflowHashString = function (access, state) {
+        var hashString = "#";
+        var a = [];
+        for (var fld in access) {
+            if (access[fld] != null)
+                a.push(encodeURIComponent(fld) + '=' + encodeURIComponent(access[fld].toString()));
+        }
+        hashString += a.join('&');
+        if (state)
+            hashString += '&state=' + encodeURIComponent(state);
+        return hashString;
+    };
+    // Parse the hash string (#...) returned from the auth token workflow. The hash string was built using the buildAuthTokenWorkflowHashString() call
+    Utils.parseAuthTokenWorkflowHashString = function (hashString) {
+        if (!hashString)
+            return null;
+        else {
+            if (hashString.substr(0) === '#')
+                hashString = hashString.substr(1);
+            if (!hashString)
+                return null;
+            var o = {};
+            var parts = hashString.split('&');
+            for (var i in parts) {
+                var s = parts[i];
+                var p = s.split('=');
+                if (p.length === 2 && p[0] && p[1]) {
+                    var fld = decodeURIComponent(p[0]);
+                    var value = decodeURIComponent(p[1]);
+                    if (fld === 'rejectUnauthorized') {
+                        var b = (value === 'true' || value === "1");
+                        o[fld] = b;
+                    }
+                    else if (fld === "expires_in") {
+                        if (!isNaN(parseInt(value)))
+                            o[fld] = parseInt(value);
+                    }
+                    else
+                        o[fld] = value;
+                }
+            }
+            return o;
+        }
     };
     Utils.getAuthorizationHeaderFormAccessToken = function (accessToken) {
         return (accessToken && accessToken.token_type && accessToken.access_token ? accessToken.token_type + ' ' + accessToken.access_token : null);
