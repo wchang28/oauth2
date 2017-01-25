@@ -88,31 +88,51 @@ export class Utils {
         url += ar.join('&');
         return url;
     }
-    // Build the query string (?...) for the auth code workflow that will later be used to redirect browser client
-    public static buildAuthCodeWorkflowQueryString(code: string, state?: string) : string {
-        let queryString = '?code=' + encodeURIComponent(code);
-        if (state) queryString += '&state=' + encodeURIComponent(state);
-        return queryString;
+    // Build the query string (?...) for the auth 'code' workflow that will later be used to redirect browser client
+    // returns "" if there is nothing to build
+    public static buildAuthCodeWorkflowQueryString(code?: string, state?: string) : string {
+        let ar: string[][] = [];
+        if (code) ar.push(["code", encodeURIComponent(code)]);
+        if (state) ar.push(["state", encodeURIComponent(state)]);
+        if (ar.length > 0) {
+            let queryString = "?";
+            for (let i in ar) {
+                if (parseInt(i) > 0) queryString += "&";
+                queryString += ar[i][0] + "=" + ar[i][1];
+            }
+            return queryString;
+        } else
+            return "";
     }
-    // Build the hash string (#...) for the auth token workflow that will later be used to redirect browser/destktop/mobile client
-    public static buildAuthTokenWorkflowHashString(access: Access, state?: string) : string {
-        let hashString = "#";
-        let a:string[] = [];
-        for (let fld in access) {
-            if (access[fld] != null)
-                a.push(encodeURIComponent(fld) + '=' + encodeURIComponent(access[fld].toString()));
+    // Build the hash string (#...) for the auth 'token' workflow that will later be used to redirect browser/destktop/mobile client
+    // returns "" if there is nothing to build
+    public static buildAuthTokenWorkflowHashString(access?: Access, state?: string) : string {
+        let ar: string[][] = [];
+        if (access) {
+            for (let fld in access) {
+                if (access[fld] != null)
+                    ar.push([encodeURIComponent(fld), encodeURIComponent(access[fld].toString())]);
+            }           
         }
-        hashString += a.join('&');
-        if (state) hashString += '&state=' + encodeURIComponent(state);
-        return hashString;
+        if (state) ar.push(["state", encodeURIComponent(state)]);
+        if (ar.length > 0) {
+            let hashString = "#";
+            for (let i in ar) {
+                if (parseInt(i) > 0) hashString += "&";
+                hashString += ar[i][0] + "=" + ar[i][1];
+            }
+            return hashString;
+        } else
+            return "";
     }
-    // Parse the hash string (#...) returned from the auth token workflow. The hash string was built using the buildAuthTokenWorkflowHashString() call
-    public static parseAuthTokenWorkflowHashString(hashString: string) : AuthTokenWorkflowHashParams {
+    // Parse the hash string (#...) returned from the auth 'token' workflow. The hash string was built using the buildAuthTokenWorkflowHashString() call
+    // returns {} if the hash is an empty string or null
+    public static parseAuthTokenWorkflowHashString(hashString?: string) : AuthTokenWorkflowHashParams {
         if (!hashString)
-            return null;
+            return {};
         else {
             if (hashString.substr(0) === '#') hashString = hashString.substr(1);
-            if (!hashString) return null;
+            if (!hashString) return {};
             let o:any = {};
             let parts = hashString.split('&');
             for (let i in parts) {

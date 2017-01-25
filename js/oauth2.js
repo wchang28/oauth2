@@ -13,35 +13,60 @@ var Utils = (function () {
         url += ar.join('&');
         return url;
     };
-    // Build the query string (?...) for the auth code workflow that will later be used to redirect browser client
+    // Build the query string (?...) for the auth 'code' workflow that will later be used to redirect browser client
+    // returns "" if there is nothing to build
     Utils.buildAuthCodeWorkflowQueryString = function (code, state) {
-        var queryString = '?code=' + encodeURIComponent(code);
+        var ar = [];
+        if (code)
+            ar.push(["code", encodeURIComponent(code)]);
         if (state)
-            queryString += '&state=' + encodeURIComponent(state);
-        return queryString;
-    };
-    // Build the hash string (#...) for the auth token workflow that will later be used to redirect browser/destktop/mobile client
-    Utils.buildAuthTokenWorkflowHashString = function (access, state) {
-        var hashString = "#";
-        var a = [];
-        for (var fld in access) {
-            if (access[fld] != null)
-                a.push(encodeURIComponent(fld) + '=' + encodeURIComponent(access[fld].toString()));
+            ar.push(["state", encodeURIComponent(state)]);
+        if (ar.length > 0) {
+            var queryString = "?";
+            for (var i in ar) {
+                if (parseInt(i) > 0)
+                    queryString += "&";
+                queryString += ar[i][0] + "=" + ar[i][1];
+            }
+            return queryString;
         }
-        hashString += a.join('&');
-        if (state)
-            hashString += '&state=' + encodeURIComponent(state);
-        return hashString;
+        else
+            return "";
     };
-    // Parse the hash string (#...) returned from the auth token workflow. The hash string was built using the buildAuthTokenWorkflowHashString() call
+    // Build the hash string (#...) for the auth 'token' workflow that will later be used to redirect browser/destktop/mobile client
+    // returns "" if there is nothing to build
+    Utils.buildAuthTokenWorkflowHashString = function (access, state) {
+        var ar = [];
+        if (access) {
+            for (var fld in access) {
+                if (access[fld] != null)
+                    ar.push([encodeURIComponent(fld), encodeURIComponent(access[fld].toString())]);
+            }
+        }
+        if (state)
+            ar.push(["state", encodeURIComponent(state)]);
+        if (ar.length > 0) {
+            var hashString = "#";
+            for (var i in ar) {
+                if (parseInt(i) > 0)
+                    hashString += "&";
+                hashString += ar[i][0] + "=" + ar[i][1];
+            }
+            return hashString;
+        }
+        else
+            return "";
+    };
+    // Parse the hash string (#...) returned from the auth 'token' workflow. The hash string was built using the buildAuthTokenWorkflowHashString() call
+    // returns {} if the hash is an empty string or null
     Utils.parseAuthTokenWorkflowHashString = function (hashString) {
         if (!hashString)
-            return null;
+            return {};
         else {
             if (hashString.substr(0) === '#')
                 hashString = hashString.substr(1);
             if (!hashString)
-                return null;
+                return {};
             var o = {};
             var parts = hashString.split('&');
             for (var i in parts) {
