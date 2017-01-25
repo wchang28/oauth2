@@ -91,39 +91,23 @@ export class Utils {
     // Build the query string (?...) for the auth 'code' workflow that will later be used to redirect browser client
     // returns "" if there is nothing to build
     public static buildAuthCodeWorkflowQueryString(code?: string, state?: string) : string {
-        let ar: string[][] = [];
-        if (code) ar.push(["code", encodeURIComponent(code)]);
-        if (state) ar.push(["state", encodeURIComponent(state)]);
-        if (ar.length > 0) {
-            let queryString = "?";
-            for (let i in ar) {
-                if (parseInt(i) > 0) queryString += "&";
-                queryString += ar[i][0] + "=" + ar[i][1];
-            }
-            return queryString;
-        } else
-            return "";
+        let ar: string[] = [];
+        if (code) ar.push("code=" + encodeURIComponent(code));
+        if (state) ar.push("state=" + encodeURIComponent(state));
+        return (ar.length > 0 ? "?" + ar.join("&") : "");
     }
     // Build the hash string (#...) for the auth 'token' workflow that will later be used to redirect browser/destktop/mobile client
     // returns "" if there is nothing to build
     public static buildAuthTokenWorkflowHashString(access?: Access, state?: string) : string {
-        let ar: string[][] = [];
+        let ar: string[] = [];
         if (access) {
             for (let fld in access) {
                 if (access[fld] != null)
-                    ar.push([encodeURIComponent(fld), encodeURIComponent(access[fld].toString())]);
+                    ar.push(encodeURIComponent(fld) + "=" + encodeURIComponent(access[fld].toString()));
             }           
         }
-        if (state) ar.push(["state", encodeURIComponent(state)]);
-        if (ar.length > 0) {
-            let hashString = "#";
-            for (let i in ar) {
-                if (parseInt(i) > 0) hashString += "&";
-                hashString += ar[i][0] + "=" + ar[i][1];
-            }
-            return hashString;
-        } else
-            return "";
+        if (state) ar.push("state=" + encodeURIComponent(state));
+        return (ar.length > 0 ? "#" + ar.join("&") : "");
     }
     // Parse the hash string (#...) returned from the auth 'token' workflow. The hash string was built using the buildAuthTokenWorkflowHashString() call
     // returns {} if the hash is an empty string or null

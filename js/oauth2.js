@@ -18,20 +18,10 @@ var Utils = (function () {
     Utils.buildAuthCodeWorkflowQueryString = function (code, state) {
         var ar = [];
         if (code)
-            ar.push(["code", encodeURIComponent(code)]);
+            ar.push("code=" + encodeURIComponent(code));
         if (state)
-            ar.push(["state", encodeURIComponent(state)]);
-        if (ar.length > 0) {
-            var queryString = "?";
-            for (var i in ar) {
-                if (parseInt(i) > 0)
-                    queryString += "&";
-                queryString += ar[i][0] + "=" + ar[i][1];
-            }
-            return queryString;
-        }
-        else
-            return "";
+            ar.push("state=" + encodeURIComponent(state));
+        return (ar.length > 0 ? "?" + ar.join("&") : "");
     };
     // Build the hash string (#...) for the auth 'token' workflow that will later be used to redirect browser/destktop/mobile client
     // returns "" if there is nothing to build
@@ -40,22 +30,12 @@ var Utils = (function () {
         if (access) {
             for (var fld in access) {
                 if (access[fld] != null)
-                    ar.push([encodeURIComponent(fld), encodeURIComponent(access[fld].toString())]);
+                    ar.push(encodeURIComponent(fld) + "=" + encodeURIComponent(access[fld].toString()));
             }
         }
         if (state)
-            ar.push(["state", encodeURIComponent(state)]);
-        if (ar.length > 0) {
-            var hashString = "#";
-            for (var i in ar) {
-                if (parseInt(i) > 0)
-                    hashString += "&";
-                hashString += ar[i][0] + "=" + ar[i][1];
-            }
-            return hashString;
-        }
-        else
-            return "";
+            ar.push("state=" + encodeURIComponent(state));
+        return (ar.length > 0 ? "#" + ar.join("&") : "");
     };
     // Parse the hash string (#...) returned from the auth 'token' workflow. The hash string was built using the buildAuthTokenWorkflowHashString() call
     // returns {} if the hash is an empty string or null
