@@ -1,8 +1,5 @@
 import * as restApiIntf from "rest-api-interfaces";
-export interface IError {
-    error: string;
-    error_description: string;
-}
+export declare type IError = restApiIntf.IError;
 export interface ClientAppSettings {
     client_id: string;
     redirect_uri?: string;
@@ -42,10 +39,7 @@ export interface AuthCodeWorkflowQueryParams {
 export interface AuthTokenWorkflowHashParams extends Access {
     state?: string;
 }
-export interface TokenGrantOptions {
-    url: string;
-    rejectUnauthorized?: boolean;
-}
+export declare type TokenGrantOptions = restApiIntf.ConnectOptions;
 export interface ClientAppOptions {
     tokenGrantOptions: TokenGrantOptions;
     clientAppSettings: ClientAppSettings;
@@ -58,6 +52,11 @@ export interface ITokenGrant {
     getAccessTokenFromAuthCode: (code: string, done: ITokenGrantCompletionHandler) => void;
     getAccessTokenFromPassword: (username: string, password: string, done: ITokenGrantCompletionHandler) => void;
     refreshAccessToken: (refresh_token: string, done: ITokenGrantCompletionHandler) => void;
+}
+export interface ITokenGrantor {
+    getAccessTokenFromAuthCode: (code: string) => Promise<Access>;
+    getAccessTokenFromPassword: (username: string, password: string) => Promise<Access>;
+    refreshAccessToken: (refresh_token: string) => Promise<Access>;
 }
 export declare class Utils {
     static getAuthWorkflowRedirectUrlWithQueryString(authorizationRedirectUrl: string, query: AuthorizationWorkflowParams): string;

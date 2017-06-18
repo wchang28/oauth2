@@ -1,9 +1,6 @@
 import * as restApiIntf from "rest-api-interfaces";
 
-export interface IError {
-    error: string;
-    error_description: string;
-}
+export type IError = restApiIntf.IError;
 
 export interface ClientAppSettings {
     client_id:string;
@@ -55,10 +52,7 @@ export interface AuthTokenWorkflowHashParams extends Access {
     state?: string;
 }
 
-export interface TokenGrantOptions {
-    url: string;
-    rejectUnauthorized?: boolean
-}
+export type TokenGrantOptions = restApiIntf.ConnectOptions;
 
 export interface ClientAppOptions {
     tokenGrantOptions: TokenGrantOptions;
@@ -66,6 +60,8 @@ export interface ClientAppOptions {
     authorizationRedirectUrl?: string   // authorization_code or authorization_token workflow redirect url
 }
 
+// TODO: TO BE OBSOLETE by ITokenGrantor
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export interface ITokenGrantCompletionHandler {
     (err:any, access: Access) : void
 }
@@ -74,6 +70,13 @@ export interface ITokenGrant {
     getAccessTokenFromAuthCode: (code:string, done: ITokenGrantCompletionHandler) => void;
     getAccessTokenFromPassword: (username:string, password:string, done: ITokenGrantCompletionHandler) => void;
     refreshAccessToken: (refresh_token:string, done: ITokenGrantCompletionHandler) => void;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export interface ITokenGrantor {
+    getAccessTokenFromAuthCode: (code:string) => Promise<Access>;   // grant access with auth code
+    getAccessTokenFromPassword: (username:string, password:string) => Promise<Access>;  // grant access with username and password
+    refreshAccessToken: (refresh_token:string) => Promise<Access>;  // refresh access token via refresh token
 }
 
 export class Utils {
