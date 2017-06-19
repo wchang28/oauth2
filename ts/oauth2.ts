@@ -73,10 +73,13 @@ export interface ITokenGrant {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export interface ITokenGrantor {
+export interface ITokenRefresher {
+    refreshAccessToken: (refresh_token:string) => Promise<Access>;  // refresh access token with refresh token
+}
+
+export interface ITokenGrantor extends ITokenRefresher {
     getAccessTokenFromAuthCode: (code:string) => Promise<Access>;   // grant access with auth code
     getAccessTokenFromPassword: (username:string, password:string) => Promise<Access>;  // grant access with username and password
-    refreshAccessToken: (refresh_token:string) => Promise<Access>;  // refresh access token via refresh token
 }
 
 export class Utils {

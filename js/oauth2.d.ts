@@ -53,10 +53,12 @@ export interface ITokenGrant {
     getAccessTokenFromPassword: (username: string, password: string, done: ITokenGrantCompletionHandler) => void;
     refreshAccessToken: (refresh_token: string, done: ITokenGrantCompletionHandler) => void;
 }
-export interface ITokenGrantor {
+export interface ITokenRefresher {
+    refreshAccessToken: (refresh_token: string) => Promise<Access>;
+}
+export interface ITokenGrantor extends ITokenRefresher {
     getAccessTokenFromAuthCode: (code: string) => Promise<Access>;
     getAccessTokenFromPassword: (username: string, password: string) => Promise<Access>;
-    refreshAccessToken: (refresh_token: string) => Promise<Access>;
 }
 export declare class Utils {
     static getAuthWorkflowRedirectUrlWithQueryString(authorizationRedirectUrl: string, query: AuthorizationWorkflowParams): string;
