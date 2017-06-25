@@ -52,7 +52,10 @@ export interface AuthTokenWorkflowHashParams extends Access {
     state?: string;
 }
 
-export type TokenGrantOptions = restApiIntf.ConnectOptions;
+export interface TokenGrantOptions {
+    url: string;
+    rejectUnauthorized?: boolean;
+}
 
 export interface ClientAppOptions {
     tokenGrantOptions: TokenGrantOptions;

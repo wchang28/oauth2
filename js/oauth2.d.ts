@@ -39,7 +39,10 @@ export interface AuthCodeWorkflowQueryParams {
 export interface AuthTokenWorkflowHashParams extends Access {
     state?: string;
 }
-export declare type TokenGrantOptions = restApiIntf.ConnectOptions;
+export interface TokenGrantOptions {
+    url: string;
+    rejectUnauthorized?: boolean;
+}
 export interface ClientAppOptions {
     tokenGrantOptions: TokenGrantOptions;
     clientAppSettings: ClientAppSettings;
