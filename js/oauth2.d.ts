@@ -45,18 +45,10 @@ export interface ClientAppOptions {
     clientAppSettings: ClientAppSettings;
     authorizationRedirectUrl?: string;
 }
-export interface ITokenGrantCompletionHandler {
-    (err: any, access: Access): void;
-}
-export interface ITokenGrant {
-    getAccessTokenFromAuthCode: (code: string, done: ITokenGrantCompletionHandler) => void;
-    getAccessTokenFromPassword: (username: string, password: string, done: ITokenGrantCompletionHandler) => void;
-    refreshAccessToken: (refresh_token: string, done: ITokenGrantCompletionHandler) => void;
-}
 export interface ITokenRefresher {
     refreshAccessToken: (refresh_token: string) => Promise<Access>;
 }
-export interface ITokenGrantor extends ITokenRefresher {
+export interface ITokenGrant extends ITokenRefresher {
     getAccessTokenFromAuthCode: (code: string) => Promise<Access>;
     getAccessTokenFromPassword: (username: string, password: string) => Promise<Access>;
 }

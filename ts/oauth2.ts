@@ -60,24 +60,11 @@ export interface ClientAppOptions {
     authorizationRedirectUrl?: string   // authorization_code or authorization_token workflow redirect url
 }
 
-// TODO: TO BE OBSOLETE by ITokenGrantor
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-export interface ITokenGrantCompletionHandler {
-    (err:any, access: Access) : void
-}
-
-export interface ITokenGrant {
-    getAccessTokenFromAuthCode: (code:string, done: ITokenGrantCompletionHandler) => void;
-    getAccessTokenFromPassword: (username:string, password:string, done: ITokenGrantCompletionHandler) => void;
-    refreshAccessToken: (refresh_token:string, done: ITokenGrantCompletionHandler) => void;
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 export interface ITokenRefresher {
     refreshAccessToken: (refresh_token:string) => Promise<Access>;  // refresh access token with refresh token
 }
 
-export interface ITokenGrantor extends ITokenRefresher {
+export interface ITokenGrant extends ITokenRefresher {
     getAccessTokenFromAuthCode: (code:string) => Promise<Access>;   // grant access with auth code
     getAccessTokenFromPassword: (username:string, password:string) => Promise<Access>;  // grant access with username and password
 }
